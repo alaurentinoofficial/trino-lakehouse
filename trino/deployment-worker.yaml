@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcb-trino-worker
+  labels:
+    app: trino
+    chart: trino-0.8.0
+    release: tcb
+    heritage: Helm
+    component: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trino
+      release: tcb
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: trino
+        release: tcb
+        component: worker
+    spec:
+      serviceAccountName: default
+      volumes:
+        - name: config-volume
+          configMap:
+            name: tcb-trino-worker
+        - name: catalog-volume
+          configMap:
+            name: tcb-trino-catalog
+      imagePullSecrets:
+        - name: registry-credentials
+      containers:
+        - name: trino-worker
+          image: "trinodb/trino:latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            []
+          volumeMounts:
+            - mountPath: /etc/trino
+              name: config-volume
+            - mountPath: /etc/trino/catalog
+              name: catalog-volume
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          resources:
+            {}

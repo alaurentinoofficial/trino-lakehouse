@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcb-trino-coordinator
+  labels:
+    app: trino
+    chart: trino-0.8.0
+    release: tcb
+    heritage: Helm
+    component: coordinator
+spec:
+  selector:
+    matchLabels:
+      app: trino
+      release: tcb
+      component: coordinator
+  template:
+    metadata:
+      labels:
+        app: trino
+        release: tcb
+        component: coordinator
+    spec:
+      serviceAccountName: default
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+        - name: config-volume
+          configMap:
+            name: tcb-trino-coordinator
+        - name: catalog-volume
+          configMap:
+            name: tcb-trino-catalog
+      imagePullSecrets:
+        - name: registry-credentials
+      containers:
+        - name: trino-coordinator
+          image: "trinodb/trino:latest"
+          imagePullPolicy: IfNotPresent
+          env:
+            []
+          volumeMounts:
+            - mountPath: /etc/trino
+              name: config-volume
+            - mountPath: /etc/trino/catalog
+              name: catalog-volume   
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          resources:
+            {}
