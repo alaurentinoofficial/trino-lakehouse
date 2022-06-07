@@ -9,6 +9,9 @@ metadata:
     heritage: Helm
     role: catalogs
 data:
+  iceberg.properties: |
+    connector.name=iceberg
+    hive.metastore.uri=thrift://metastore:9083
   tpch.properties: |
     connector.name=tpch
     tpch.splits-per-node=4
