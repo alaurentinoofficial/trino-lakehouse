@@ -5,10 +5,10 @@ metadata:
   name: metastore-db
 spec:
   ports:
-  - port: 13306
+  - port: 3306
     targetPort: 3306
   selector:
-    app: mariadb
+    app: metastore-db
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -28,13 +28,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: mariadb
+      app: metastore-db
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mariadb
+        app: metastore-db
     spec:
       containers:
       - name: mariadb
