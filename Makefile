@@ -15,8 +15,10 @@ install-helm-charts:
 build-hive-metastore:
 	docker build ./hive-metastore -t hive-metastore
 
-.PHONY: up-minio
+.PHONY: apply-minio
 apply-minio:
-	kubectl apply -f minio/minio-pvc.yaml
-	kubectl apply -f minio/minio-deployment.yaml
-	kubectl apply -f minio/minio-service.yaml
+	kustomize build ./minio | kubectl apply -f -
+
+.PHONY: apply-mestastore
+apply-mestastore:
+	kustomize build ./hive-metastore | kubectl apply -f -
