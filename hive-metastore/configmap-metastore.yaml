@@ -1,29 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hive-core-site-cfg
-  labels:
-    app: hive-core-site-cfg
-data:
-  core-site.xml: |
-    <configuration>
-      <property>
-        <name>fs.s3a.connection.ssl.enabled</name>
-        <value>false</value>
-      </property>
-      <property>
-        <name>fs.s3a.endpoint</name>
-        <value>10.62.64.200</value>
-      </property>
-      <property>
-        <name>fs.s3a.fast.upload</name>
-        <value>true</value>
-      </property>
-    </configuration>
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: hive-metastore-site-cfg
   labels:
     app: hive-metastore-site-cfg
@@ -32,12 +9,13 @@ data:
     <configuration>
       <property>
         <name>metastore.task.threads.always</name>
-        <value>org.apache.hadoop.hive.metastore.events.EventCleanerTask</value>
+        <value>org.apache.hadoop.hive.metastore.events.EventCleanerTask,org.apache.hadoop.hive.metastore.MaterializationsCacheCleanerTask</value>
       </property>
       <property>
         <name>metastore.expression.proxy</name>
         <value>org.apache.hadoop.hive.metastore.DefaultPartitionExpressionProxy</value>
       </property>
+
       <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
         <value>com.mysql.jdbc.Driver</value>
@@ -52,12 +30,34 @@ data:
       </property>
       <property>
         <name>javax.jdo.option.ConnectionPassword</name>
-        <value>password</value>
+        <value>secret123321$%</value>
+      </property>
+
+      <property>
+        <name>fs.s3a.endpoint</name>
+        <value>http://minio:9000</value>
       </property>
       <property>
-        <name>metastore.warehouse.dir</name>
-        <value>file:///tmp/</value>
+        <name>fs.s3a.access.key</name>
+        <value>wdgLskaxUdXoE2Wr</value>
       </property>
+      <property>
+          <name>fs.s3a.secret.key</name>
+          <value>JE7fWHolYolz5oMyXYaBEcr5DrQ5IEpc</value>
+      </property>
+      <property>
+        <name>fs.s3a.path.style.access</name>
+        <value>true</value>
+      </property>
+
+      <property>
+        <name>metastore.warehouse.dir</name>
+        <value>s3a://gold/</value>
+      </property>
+      # <property>
+      #   <name>metastore.thrift.uris</name>
+      #   <value>thrift://0.0.0.0:9083</value>
+      # </property>
       <property>
         <name>metastore.thrift.port</name>
         <value>9083</value>
