@@ -8,6 +8,7 @@ spec:
   - port: 9083
     targetPort: 9083
     protocol: TCP
+    name: metastore
   selector:
     app: metastore
 ---
