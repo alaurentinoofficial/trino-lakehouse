@@ -7,5 +7,7 @@ commonLabels:
   app: hive-metastore
 
 resources:
-- mariadb.yaml
-- metastore.yaml
+# - mariadb.yaml
+- metastore-cfg.yaml
+- metastore-deployment.yaml
+- metastore-service.yaml

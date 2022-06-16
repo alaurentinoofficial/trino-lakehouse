@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hive-metastore
+spec:
+  selector:
+    matchLabels:
+      app: hive-metastore
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hive-metastore
+    spec:
+      containers:
+      - name: hive-metastore
+        image: hive-metastore
+        ports:
+        - containerPort: 9083
+        volumeMounts:
+        - name: hive-metastore-site
+          mountPath: /opt/hive-metastore/conf/metastore-site.xml
+          subPath: metastore-site.xml
+        command: ["/opt/hive-metastore/bin/start-metastore"]
+        args: ["-p", "9083"]
+        # command: ["/usr/bin/tail"]
+        # args: ["-f", "/dev/null"]
+        resources:
+          requests:
+            memory: "2G"
+            cpu: 1
+        imagePullPolicy: Never
+      volumes:
+        - name: hive-metastore-site
+          configMap:
+            name: hive-metastore-site-cfg

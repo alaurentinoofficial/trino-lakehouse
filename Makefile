@@ -19,6 +19,10 @@ build-hive-metastore:
 apply-minio:
 	kustomize build ./minio | kubectl apply -f -
 
+.PHONY: apply-trino
+apply-trino:
+	kustomize build ./trino | kubectl apply -f -
+
 .PHONY: apply-mestastore
 apply-mestastore:
 	kustomize build ./hive-metastore | kubectl apply -f -
