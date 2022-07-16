@@ -1,30 +1,7 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: metastore-db
-spec:
-  ports:
-  - port: 3306
-    targetPort: 3306
-  selector:
-    app: metastore-db
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: maria-pv-claim
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mariadb
+  name: metastore-db
 spec:
   selector:
     matchLabels:
@@ -43,19 +20,19 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: metadata-db
+              name: metastore-db-secrets
               key: password
         ports:
         - containerPort: 3306
           name: mariadb
         volumeMounts:
-        - name: mariadb-for-hive
+        - name: metastore-for-hive
           mountPath: /var/lib/mysql
         resources:
           requests:
             memory: "1G"
             cpu: 1
       volumes:
-      - name: mariadb-for-hive
+      - name: metastore-for-hive
         persistentVolumeClaim:
-          claimName: maria-pv-claim
+          claimName: metastore-db-pv-claim

@@ -4,9 +4,9 @@ metadata:
   name: arbitrary
 
 commonLabels:
-  app: hive-metastore
+  app: metastore-db
 
 resources:
-- metastore-cfg.yaml
-- metastore-deployment.yaml
-- metastore-service.yaml
+- metastore-db-pcv.yaml
+- metastore-db-deployment.yaml
+- metastore-db-service.yaml
