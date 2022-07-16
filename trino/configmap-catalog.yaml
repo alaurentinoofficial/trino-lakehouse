@@ -9,15 +9,30 @@ metadata:
     heritage: Helm
     role: catalogs
 data:
-  lake.properties: |
-    connector.name=hive
-    hive.metastore.uri=thrift://10.42.0.241:9083
+  delta.properties: |
+    connector.name=delta-lake
+    hive.metastore.uri=thrift://metastore:9083
     hive.s3.path-style-access=true
     hive.s3.endpoint=http://minio:9000
     hive.s3.aws-access-key=minio
     hive.s3.aws-secret-key=minio123
-    hive.non-managed-table-writes-enabled=true
     hive.s3select-pushdown.enabled=true
+  iceberg.properties: |
+    connector.name=iceberg
+    hive.metastore.uri=thrift://metastore:9083
+    hive.s3.path-style-access=true
+    hive.s3.endpoint=http://minio:9000
+    hive.s3.aws-access-key=minio
+    hive.s3.aws-secret-key=minio123
+  hive.properties: |
+    connector.name=hive
+    hive.metastore.uri=thrift://metastore:9083
+    hive.s3.path-style-access=true
+    hive.s3.endpoint=http://minio:9000
+    hive.s3.aws-access-key=minio
+    hive.s3.aws-secret-key=minio123
+    hive.s3select-pushdown.enabled=true
+    hive.non-managed-table-writes-enabled=true
     hive.allow-drop-table=true
   tpch.properties: |
     connector.name=tpch

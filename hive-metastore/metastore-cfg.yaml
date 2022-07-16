@@ -49,11 +49,11 @@ data:
       </property>
       <property>
         <name>fs.s3a.access.key</name>
-        <value>UKR5sJ9IumZORgsH</value>
+        <value>minio</value>
       </property>
       <property>
           <name>fs.s3a.secret.key</name>
-          <value>ICHeiGstYCAAkTEvg2eL4MpmjSmz1C8r</value>
+          <value>minio123</value>
       </property>
       <property>
         <name>fs.s3a.path.style.access</name>
